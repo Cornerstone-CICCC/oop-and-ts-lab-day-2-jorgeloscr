@@ -7,11 +7,18 @@ interface Team {
   members: { name: string; role: string }[];
 }
 
-function updateTeam(team, updates) {
+type TeamUpdates = Partial<Omit<Team, 'name'>>;
 
+function updateTeam(team: Team, updates: TeamUpdates): Team {
+  const updatedTeam: Team = {
+    ...team,
+    ...updates,
+  };
+
+  return updatedTeam;
 }
 
 // Expected output:
 const team = { name: "Dev Team", members: [{ name: "Alice", role: "Developer" }] };
-updateTeam(team, { members: [{ name: "Bob", role: "Designer" }] }) 
+console.log(updateTeam(team, { members: [{ name: "Bob", role: "Designer" }] }) )
 // { name: "Dev Team", members: [{ name: "Bob", role: "Designer" }] }

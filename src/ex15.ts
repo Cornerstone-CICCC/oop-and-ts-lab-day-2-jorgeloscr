@@ -7,14 +7,25 @@ interface Product {
   category: string;
 }
 
-function groupByCategory(products) {
-  
+function groupByCategory(products: Product[]): Record<string, Product[]> {
+  const grouped: Record<string, Product[]> = {};
+
+  products.forEach(product => {
+    const { category } = product;
+    
+    if (!grouped[category]) {
+      grouped[category] = [];
+    }
+    grouped[category].push(product);
+  });
+
+  return grouped;
 }
 
 // Expected output:
-groupByCategory([
+console.log(groupByCategory([
   { name: "Apple", category: "Fruit" },
   { name: "Carrot", category: "Vegetable" },
   { name: "Orange", category: "Fruit" }
-])
+]))
 // { Fruit: [{ name: "Apple", category: "Fruit" }, { name: "Orange", category: "Fruit" }], Vegetable: [{ name: "Carrot", category: "Vegetable" }] }

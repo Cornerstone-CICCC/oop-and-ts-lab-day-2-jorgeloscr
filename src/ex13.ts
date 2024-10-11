@@ -1,16 +1,23 @@
 // Create a class decorator `InjectTimestamp` that adds a `timestamp` property to a class.
 // The decorator should modify the class so that every time an instance is created, it has the current timestamp.
 
-function InjectTimestamp() {
-  
+function InjectTimestamp<T extends { new (...args: any[]): {} }>(constructor: T) {
+  return class extends constructor {
+    timestamp: Date;
+
+    constructor(...args: any[]) {
+      super(...args);
+      this.timestamp = new Date(); // Set the current date and time
+    }
+  };
 }
 
 @InjectTimestamp
 class Report {
-  title: string
+  title: string;
 
   constructor(t: string) {
-    this.title = t
+    this.title = t;
   }
 }
 

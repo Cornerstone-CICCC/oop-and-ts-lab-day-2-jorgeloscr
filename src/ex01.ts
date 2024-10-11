@@ -6,10 +6,25 @@
 // - Return type: string for string inputs, number for number inputs.
 
 
-function transformInput(x) {
+function transformInput(x: string | number) {
+    if(  typeof x === 'string'){
+        let wordReversed = x.split('').reverse().join('')
+            return wordReversed
+    }else if(typeof x === 'number' && x >0){
+        let factorial: number =1
+        for(let i = 1; i<=x;i++){
+            factorial *= i
+            
+        }
+        
+        return factorial
+
+    }
+
+    throw new Error("No valid input, nor a string or a positive number")
 
 }
 
 // Expected output:
-transformInput("TypeScript") // "tpircSepyT"
-transformInput(5) // 120
+console.log(transformInput("TypeScript")) // "tpircSepyT"
+console.log(transformInput(5)) // 120

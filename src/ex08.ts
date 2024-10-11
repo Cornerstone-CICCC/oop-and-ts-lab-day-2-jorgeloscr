@@ -9,14 +9,31 @@ interface Employee {
 }
 
 interface Company {
-
+  name: string;
+  address: string;
+  employees: Employee[];
 }
 
-function updateCompany(company, updates) {
-  
+type CompanyUpdates = Partial<Omit<Company, 'employees'>> & {
+  employees?: Partial<Employee>[];
+};
+
+function updateCompany(company: Company, updates: CompanyUpdates): Company {
+  const updatedCompany: Company = {
+    ...company,
+    ...updates,
+    employees: updates.employees
+      ? company.employees.map((employee) => {
+          const update = updates.employees?.find(e => e.name === employee.name);
+          return update ? { ...employee, ...update } : employee;
+        })
+      : company.employees,
+  };
+
+  return updatedCompany;
 }
 
 // Expected output:
 const company = { name: "TechCorp", address: "123 St", employees: [{ name: "Alice", role: "Developer", salary: 100000 }] };
-updateCompany(company, { employees: [{ name: "Alice", role: "Senior Developer" }] }) 
+console.log(updateCompany(company, { employees: [{ name: "Alice", role: "Senior Developer" }] }) )
 // { name: "TechCorp", address: "123 St", employees: [{ name: "Alice", role: "Senior Developer", salary: 100000 }] }
